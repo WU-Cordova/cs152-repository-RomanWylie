@@ -12,6 +12,8 @@ class Bag(IBag[T]):
     def add(self, item: T) -> None:
         if item in self.__bag:
             self.__bag[item] += 1
+        elif item is None:
+            raise TypeError("item cannot be None")
         else:
             self.__bag[item] = 1
     
@@ -23,16 +25,28 @@ class Bag(IBag[T]):
             raise ValueError("item not in bag")
             
     def count(self, item: T) -> int:
-        raise NotImplementedError("count method not implemented")
+        if item in self.__bag:
+            return self.__bag[item]
+        else:
+            return 0
+
 
     def __len__(self) -> int:
-        raise NotImplementedError("__len__ method not implemented")
-
+        total = 0
+        for item in self.__bag:
+            total += self.count(item)
+        return total
+    
     def distinct_items(self) -> Iterable[T]:
-        raise NotImplementedError("distinct_items method not implemented")
+        raise
+            
+            
 
     def __contains__(self, item) -> bool:
-        raise NotImplementedError("__contains__ method not implemented")
+        if item in self.__bag:
+            return True
+        else:
+            return False
 
     def clear(self) -> None:
-        raise NotImplementedError("clear method not implemented")
+        self.__bag: dict[T, int]={}
