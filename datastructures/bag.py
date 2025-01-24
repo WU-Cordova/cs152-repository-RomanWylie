@@ -12,8 +12,6 @@ class Bag(IBag[T]):
     def add(self, item: T) -> None:
         if item in self.__bag:
             self.__bag[item] += 1
-        elif item is None:
-            raise TypeError("item cannot be None")
         else:
             self.__bag[item] = 1
     
