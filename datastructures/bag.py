@@ -38,7 +38,7 @@ class Bag(IBag[T]):
         return total
     
     def distinct_items(self) -> Iterable[T]:
-        raise
+        return list(self.__bag)
             
             
 
