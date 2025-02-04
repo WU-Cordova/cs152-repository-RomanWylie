@@ -25,5 +25,5 @@ class CardFace(Enum):
 @dataclass
 class Card:
     card_face : CardFace
-    point_value : int
+    card_value : int
     card_suit : CardSuit
