@@ -4,7 +4,7 @@ from random import choice
 
 
 class Deck(Bag):
-    def __init__(self, multi:int):
+    def __init__(self, multi:int = 1):
         for i in range(multi):
             for suit in list(CardSuit):
                 for face in list(CardFace):
