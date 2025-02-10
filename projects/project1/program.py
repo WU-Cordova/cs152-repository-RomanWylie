@@ -1,9 +1,10 @@
+from projects.project1.game import Game
 
 
 def main():
+    bagjack = Game()
+    bagjack.play_game()
     
-    print("Hello, World!")
-
 
 
 if __name__ == '__main__':
