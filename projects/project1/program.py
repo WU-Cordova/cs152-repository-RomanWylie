@@ -1,9 +1,10 @@
-import random
-from card import Card, CardFace, CardSuit
-from deck import Deck
+from projects.project1.game import Game
+
 
 def main():
-    pass
+    bagjack = Game()
+    bagjack.play_game()
+    
 
 
 if __name__ == '__main__':
