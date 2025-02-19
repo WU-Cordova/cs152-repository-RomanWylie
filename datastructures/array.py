@@ -11,6 +11,7 @@ import os
 from typing import Any, Iterator, overload
 import numpy as np
 from numpy.typing import NDArray
+from copy import deepcopy
 
 
 from datastructures.iarray import IArray, T
@@ -22,18 +23,21 @@ class Array(IArray[T]):
         self.__logical_size: int = len(starting_sequence)
         self.__physical_size: int = self.__logical_size
         self.__data_type: type = data_type
-
         if not isinstance(starting_sequence, Sequence):
-            raise ValueError('starting sequence must be a valid sequence type')
+            raise TypeError('Starting sequence must be a valid sequence type')
         for index in range(self.__logical_size):
             if not isinstance(starting_sequence[index], self.__data_type):
                 raise TypeError('Items in starting sequence are not all same type')
-        self.__items: NDArray = np.array(self.__logical_size, dtype=self.__data_type)
+        self.__items: NDArray = np.empty(self.__logical_size, dtype=self.__data_type)
+        for index in range(self.__logical_size):
+            self.__items[index] = starting_sequence[index]
+        
         
 
 
     @overload
-    def __getitem__(self, index: int) -> T: ...
+    def __getitem__(self, index: int) -> T: ... 
+        
     @overload
     def __getitem__(self, index: slice) -> Sequence[T]: ...
     def __getitem__(self, index: int | slice) -> T | Sequence[T]:

@@ -120,7 +120,7 @@ class TestArray:
         assert setup_numerical_array[1:5] == Array([1, 2, 3, 4])
 
     def test_constructor_should_raise_a_value_error_if_the_sequence_passed_in_is_not_a_sequence(self):
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             Array(1) #type: ignore
 
     def test_constructor_should_raise_a_type_error_if_the_sequence_passed_in_is_not_the_same_type_as_the_array(self):
