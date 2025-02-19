@@ -11,7 +11,7 @@ import os
 from typing import Any, Iterator, overload
 import numpy as np
 from numpy.typing import NDArray
-from copy import deepcopy
+from copy import deepcopy, copy
 
 
 from datastructures.iarray import IArray, T
@@ -30,21 +30,53 @@ class Array(IArray[T]):
                 raise TypeError('Items in starting sequence are not all same type')
         self.__items: NDArray = np.empty(self.__logical_size, dtype=self.__data_type)
         for index in range(self.__logical_size):
-            self.__items[index] = starting_sequence[index]
+            self.__items[index] = deepcopy(starting_sequence[index])
+
+
         
         
 
 
     @overload
-    def __getitem__(self, index: int) -> T: ... 
+    def __getitem__(self, index: int) -> T:
+        if index not in range(self.__logical_size):
+            raise IndexError("Index must be in array")
+        item = self.__items[index]
+        return item.item() if isinstance(item, np.generic) else item
+        
         
     @overload
-    def __getitem__(self, index: slice) -> Sequence[T]: ...
-    def __getitem__(self, index: int | slice) -> T | Sequence[T]:
-            raise NotImplementedError('Indexing not implemented.')
+    def __getitem__(self, index: slice) -> Sequence[T]:
+        if isinstance(index, slice):
+            start = index.start if not None else 0
+            stop = index.stop if not None else -1
+            step = index.step if not None else 1
+            if start in range(self.__logical_size) and start+step in range(self.__logical_size):
+                raise IndexError("Index must be in array")
+            sliced_items = self.__items[start:stop:step]
+            return Array(starting_sequence=list(sliced_items), data_type=self.__data_type)
     
+    def __getitem__(self, index: int | slice) -> T | Sequence[T]:
+        if isinstance(index, slice):
+            start = index.start if not None else 0
+            stop = index.stop if not None else -1
+            step = index.step if not None else 1
+            if start in range(self.__logical_size) and start+step in range(self.__logical_size):
+                raise IndexError("Index must be in array")
+            sliced_items = self.__items[start:stop:step]
+            return Array(starting_sequence=list(sliced_items), data_type=self.__data_type) 
+        elif isinstance(index, int):
+            if index not in range(self.__logical_size):
+                raise IndexError("Index must be in array")
+            item = self.__items[index]
+            return item.item() if isinstance(item, np.generic) else item
+        
     def __setitem__(self, index: int, item: T) -> None:
-        raise NotImplementedError('Indexing not implemented.')
+        if not isinstance(item, self.__data_type):
+            raise TypeError("Item must be valid data type")
+        if index not in range(self.__logical_size):
+            raise IndexError("Index must be within array")
+               
 
     def append(self, data: T) -> None:
         raise NotImplementedError('Append not implemented.')
@@ -59,7 +91,7 @@ class Array(IArray[T]):
         raise NotImplementedError('Pop front not implemented.')
 
     def __len__(self) -> int: 
-        raise NotImplementedError('Length not implemented.')
+        return(self.__logical_size)
 
     def __eq__(self, other: object) -> bool:
         raise NotImplementedError('Equality not implemented.')
