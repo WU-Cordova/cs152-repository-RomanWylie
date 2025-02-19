@@ -76,6 +76,8 @@ class Array(IArray[T]):
             raise TypeError("Item must be valid data type")
         if index not in range(self.__logical_size):
             raise IndexError("Index must be within array")
+        else:
+            self.__items[index] = item
                
 
     def append(self, data: T) -> None:
@@ -94,7 +96,14 @@ class Array(IArray[T]):
         return(self.__logical_size)
 
     def __eq__(self, other: object) -> bool:
-        raise NotImplementedError('Equality not implemented.')
+        if not isinstance(other, Array):
+            return False
+        elif self.__logical_size != other.__logical_size:
+            return False
+        elif self.__items.all() == other.__items.all():
+            return True
+        else:
+            return False
     
     def __iter__(self) -> Iterator[T]:
         raise NotImplementedError('Iteration not implemented.')
