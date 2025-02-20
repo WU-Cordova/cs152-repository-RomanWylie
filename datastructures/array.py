@@ -24,7 +24,7 @@ class Array(IArray[T]):
         self.__physical_size: int = self.__logical_size
         self.__data_type: type = data_type
         if not isinstance(starting_sequence, Sequence):
-            raise TypeError('Starting sequence must be a valid sequence type')
+            raise ValueError('Starting sequence must be a valid sequence type')
         for index in range(self.__logical_size):
             if not isinstance(starting_sequence[index], self.__data_type):
                 raise TypeError('Items in starting sequence are not all same type')
