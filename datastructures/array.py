@@ -106,16 +106,15 @@ class Array(IArray[T]):
             return False
     
     def __iter__(self) -> Iterator[T]:
-        raise NotImplementedError('Iteration not implemented.')
-
+	    return iter(self.__items)
+    
     def __reversed__(self) -> Iterator[T]:
-        raise
-
+        pass
     def __delitem__(self, index: int) -> None:
        raise NotImplementedError('Delete not implemented.')
 
     def __contains__(self, item: Any) -> bool:
-        raise NotImplementedError('Contains not implemented.')
+        any(self.__items[i] is item for i in range(self.__logical_size))
 
     def clear(self) -> None:
         raise NotImplementedError('Clear not implemented.')
