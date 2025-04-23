@@ -1,8 +1,10 @@
 
+from datastructures.linkedlist import LinkedList
 
 def main():
     
-    print("Hello, World!")
+    LinkedList(data_type=int)
+    
 
 
 
