@@ -205,7 +205,7 @@ class LinkedList[T](ILinkedList[T]):
         def __next__(self):
             while self.current:
                 val = self.current.data
-                self.current = self.current.next if self.direction == 'forward' else self.current.prev
+                self.current = self.current.next if self.direction == 'forward' else self.current.previous
                 if self._skipped < self.step - 1:
                     self._skipped += 1
                     continue
@@ -217,13 +217,8 @@ class LinkedList[T](ILinkedList[T]):
         
 
     def __reversed__(self) -> ILinkedList[T]:
-        travel=self._tail
-        rev_list = LinkedList(data_type=self._data_type)
-        while travel is not None:
-            item = travel.data
-            rev_list.append(item)
-            travel=travel.previous
-        return rev_list
+        iteration = LinkedList.LinkedListIterator(start=self._tail, direction=reversed)
+        return iteration
     
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, LinkedList):
