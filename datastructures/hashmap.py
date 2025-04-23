@@ -31,7 +31,7 @@ class HashMap(IHashMap[KT, VT]):
 
     def _next_prime(n:int):
         def is_prime(num:int) -> bool:
-            
+            return
         
         while not is_prime(n):
             n+=1

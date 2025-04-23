@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import os
 from types import NoneType
-from typing import Optional, Sequence
+from typing import Callable, Iterator, Optional, Sequence
 from datastructures.ilinkedlist import ILinkedList, T
 
 
@@ -180,18 +180,41 @@ class LinkedList[T](ILinkedList[T]):
     def __contains__(self, item: T) -> bool:
         return item in iter(self)
 
-    def __iter__(self) -> ILinkedList[T]:
-        travel=self._head
-        iterable=[]
-        while travel is not None:
-            item = travel.data
-            iterable.append(item)
-            travel=travel.next
-        iterable=iter(iterable)
-        return iterable
+
+    def __iter__(self):
+        iteration = LinkedList.LinkedListIterator(start=self._head)
+        return iteration
     
-    def __next__(self) -> T:
+    def __next__(self):
         return
+
+    class LinkedListIterator(Iterator[T]):
+        def __init__(self, start: Optional['LinkedList.Node'],
+                 direction: str = 'forward',
+                 filter_fn: Optional[Callable[[T], bool]] = None,
+                 step: int = 1) -> None:
+            self.current = start
+            self.direction = direction
+            self.filter_fn = filter_fn if filter_fn else lambda x: True
+            self.step = step
+            self._skipped = 0
+
+        def __iter__(self):
+            return self
+
+        def __next__(self):
+            while self.current:
+                val = self.current.data
+                self.current = self.current.next if self.direction == 'forward' else self.current.prev
+                if self._skipped < self.step - 1:
+                    self._skipped += 1
+                    continue
+                self._skipped = 0
+                if self.filter_fn(val):
+                    return val
+            raise StopIteration
+
+        
 
     def __reversed__(self) -> ILinkedList[T]:
         travel=self._tail
