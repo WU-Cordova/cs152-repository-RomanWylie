@@ -187,6 +187,8 @@ class ArrayStack(IStack[T]):
             Returns:
                 bool -- True if the stacks are equal, False otherwise.
         '''
+        if self.__capacity != other.__capacity:
+            return False
         list_self=[]
         list_other=[]
         for i in range(self.__capacity):

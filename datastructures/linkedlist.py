@@ -235,8 +235,9 @@ class LinkedList[T](ILinkedList[T]):
                 equal=travel.data==other_travel.data
                 if equal==False:
                     break
-                travel=travel.next
-                other_travel=other_travel.next
+                else:
+                    travel=travel.next
+                    other_travel=other_travel.next
             return equal
             
 
