@@ -301,12 +301,13 @@ class CircularQueue(IQueue[T]):
             Returns:
                 True if this CircularQueue is equal to another object, False otherwise
         '''
+        
         if self.__count==other.__count:
             list_self=[]
             list_other=[]
             for i in range(self.capacity):
                 list_self.append(self.queue[(self.__front+i+self.__count)%self.capacity])
-                list_other.append(other.queue[(other.__front+i+other.__count)%other.capacity])
+                list_other.append(other.queue[(other.__front+i+other.__count)%self.capacity])
             return list_self==list_other
         else:
             return False
