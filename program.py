@@ -1,9 +1,9 @@
 
+from math import sqrt
 from datastructures.linkedlist import LinkedList
 
 def main():
-    
-    LinkedList(data_type=int)
+    return
     
 
 
