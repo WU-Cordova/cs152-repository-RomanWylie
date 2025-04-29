@@ -52,6 +52,7 @@ class HashMap(IHashMap[KT, VT]):
                 n+=1
 
             return n
+        new_size = _next_prime(double)
         self._buckets = Array(starting_sequence= [LinkedList(data_type=Tuple) for x in range(double)], data_type=LinkedList[Tuple])
         for i in range(len(old_buckets)):
             current = old_buckets[i]._head
@@ -68,7 +69,7 @@ class HashMap(IHashMap[KT, VT]):
             current = self._buckets[index]._head
             while current is not None:
                 if current.data[0] == key:
-                    current.data = (key, value)
+                    current.data = tuple(key, value)
         else:
             self._buckets[index].append((key, value))
             self._count += 1
@@ -87,16 +88,19 @@ class HashMap(IHashMap[KT, VT]):
         raise NotImplementedError("HashMap.items() is not implemented yet.")
             
     def __delitem__(self, key: KT) -> None:
-        if key not in self._buckets:
-            raise KeyError(f"{key} is not in hashmap.")
-        index = self._get_bucket_index(key)
+            
+        index = self._get_bucket_index(key, len(self._buckets))
         current = self._buckets[index]._head
         while current is not None:
             if current.data[0] == key:
                 current.previous.next = current.next
-                current.next.previous = current.previous
+                if current.next is not None:
+                    current.next.previous = current.previous
                 self._count -= 1
                 return
+            else:
+                current=current.next
+        raise KeyError(f"{key} is not in hashmap.")
     
     def __contains__(self, key: KT) -> bool:
         index = self._get_bucket_index(key, len(self._buckets)) 
