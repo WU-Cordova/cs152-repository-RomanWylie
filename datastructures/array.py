@@ -90,7 +90,7 @@ class Array(IArray[T]):
 
     def append(self, data: T) -> None:
         app_index: int = self.__logical_size + 1
-        if self.__logical_size == self.__physical_size:
+        if self.__logical_size >= self.__physical_size:
             new_size = self.__physical_size * 2
             new_array: NDArray = np.empty(new_size, dtype=self.__data_type) 
             for i in range(len(self.__items)):

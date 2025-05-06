@@ -147,7 +147,8 @@ class LinkedList[T](ILinkedList[T]):
             raise IndexError("List is empty")
         removed_item=self._head
         self._head=self._head.next
-        self._head.previous=None
+        if self._head is not None:
+            self._head.previous=None
         self._size-=1
         return removed_item.data
 
