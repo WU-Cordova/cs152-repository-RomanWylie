@@ -1,8 +1,9 @@
-
+from projects.project3.bistrosystem import BistroSystem
 
 def main():
     
-    print("Hello, World!")
+    bistrosystem = BistroSystem()
+    bistrosystem._main_menu()
 
 
 
